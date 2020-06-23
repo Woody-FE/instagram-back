@@ -16,11 +16,11 @@ class User(AbstractUser):
         ('female', 'Female'),
     }
 
-    name = models.CharField("사용자이름", max_langth=100, blank=True)
-    profile_photo = ProcessedImageField(upload_to=photo_path, processors=[ResizeToFill(150, 150)] format='JPEG', options={'quality': 100}, default='null_image.jpg')
+    name = models.CharField("사용자이름", max_length=100, blank=True)
+    profile_photo = ProcessedImageField(upload_to=photo_path, processors=[ResizeToFill(150, 150)], format='JPEG', options={'quality': 100}, blank=True)
     followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings')
     gender = models.CharField(max_length=80, choices=GENDER_CHOICES, blank=True)
-    bio = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.username

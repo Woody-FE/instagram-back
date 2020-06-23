@@ -3,5 +3,5 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
-class UserList(APIView):
-    
+# class UserDetail(APIView):
+#     def get
