@@ -25,7 +25,7 @@
 
    - Login
 
-     > - URL
+     > - URL : '/rest-auth/login/'
      >
      > - request
      >
