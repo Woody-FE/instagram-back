@@ -19,7 +19,7 @@
      >
      > - response
      >
-     >   ![](./guide/스크린샷 2020-06-23 오후 5.24.35.png)
+     >   ![](./guide/auth.png)
      >
      > 
 
@@ -39,5 +39,5 @@
      >
      > - response
      >
-     >   ![](./guide/스크린샷 2020-06-23 오후 5.24.35.png)
+     >   ![](./guide/auth.png)
 
