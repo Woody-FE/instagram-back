@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     # DRF
     'rest_framework',
     'rest_framework.authtoken',
@@ -62,6 +63,10 @@ INSTALLED_APPS = [
     # My Apps
     'accounts',
     'articles',
+
+    # taggit (tag)
+    'taggit',
+    'taggit_serializer',
 
 ]
 
