@@ -6,20 +6,21 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 from accounts.permissions import IsOwnerOrReadOnly
 from .serializers import FeedSerializer, FeedDetailSerializer, FeedCommentSerializer
-from .models import Feed, Comment
+from .models import Feed, Comment, FeedImage
 
 class FeedList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get(self, request, format=None):
         feeds = Feed.objects.all()
-        serializer = FeedSerializer(feeds, many=True)
+        serializer = FeedSerializer(feeds, many=True, context={'request': request})
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = FeedSerializer(data=request.data)
+        serializer = FeedSerializer(data=request.data, context={'request': request})
+
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
+            serializer.save(user=request.user)  
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

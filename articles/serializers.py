@@ -1,10 +1,15 @@
 from django.contrib.auth import get_user_model
 from .models import Feed, FeedImage, Comment, Tag
 from rest_framework import serializers
-from taggit_serializer.serializers import (TagListSerializerField,
-                                           TaggitSerializer)
+import re
 
 User = get_user_model()
+
+# 태그
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('name',)
 
 # 댓글, 좋아요에 들어갈 간소화된 유저
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -42,15 +47,31 @@ class UserFeedListSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'profile_photo', 'feed_set')
 
 # 기본 피드 리스트 ( 메인 페이지에서 보여주는 정보가 많음 )
-class FeedSerializer(TaggitSerializer, serializers.ModelSerializer):
+class FeedSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer(read_only=True)
-    # 임시로 이미지를 막아둠 ( read_only 제거하면 사용 가능 )
     images = FeedImageSerializer(source="feedimage_set", many=True, read_only=True)
     like_users = UserInfoSerializer(many=True, read_only=True)
     like_count = serializers.ReadOnlyField()
     comment_count = serializers.ReadOnlyField()
     comments = FeedCommentSerializer(many=True, read_only=True)
-    tags = TagListSerializerField()
+    tags = TagSerializer(many=True, read_only=True)
+
+    def create(self, validated_data):
+        # print(self.context.get('request').FILES)
+        instance = super(FeedSerializer, self).create(validated_data)
+        content = validated_data['content']
+        tag_sets = re.findall(r'#(\w+)\b', content)
+        ins_tags = []
+        if tag_sets:
+            for t in tag_sets:
+                tag, tag_created = Tag.objects.get_or_create(name=t)
+                instance.tags.add(tag)
+        images_data = self.context['request'].FILES
+        for image_data in images_data.getlist('image'):
+            FeedImage.objects.create(user=instance.user, feed=instance, image=image_data)
+        return instance
+    
+
     class Meta:
         model = Feed
         fields = ('id', 'user', 'content', 'images', 'comments', 'comment_count', 'tags', 'like_users', 'like_count','created_at', 'updated_at')
