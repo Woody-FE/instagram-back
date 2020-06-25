@@ -183,5 +183,87 @@
        >   }
        >   ```
 
+   - FeedComment
+
+     - get
+
+       > - URL : '/articles/:feed_pk/comments/'
+       >
+       > - response
+       >
+       >   ```js
+       >   [
+       >       {
+       >           "id": 2,
+       >           "user": {
+       >               "id": 2,
+       >               "username": "hwang00",
+       >               "profile_photo": null
+       >           },
+       >           "content": "ㅋㅋㅋㅋㅋLCK화이팅",
+       >           "created_at": "2020-06-25T08:10:45.068439Z",
+       >           "updated_at": "2020-06-25T08:10:45.068612Z"
+       >       },
+       >       {
+       >           "id": 1,
+       >           "user": {
+       >               "id": 2,
+       >               "username": "hwang00",
+       >               "profile_photo": null
+       >           },
+       >           "content": "좋아요 좋아",
+       >           "created_at": "2020-06-25T08:10:23.545521Z",
+       >           "updated_at": "2020-06-25T08:10:23.545578Z"
+       >       }
+       >   ]
+       >   ```
+
+     - post
+
+       > - URL : '/articles/:feed_pk/comments/'
+       >
+       > - request
+       >
+       >   ```js
+       >   header: {
+       >     Authorization: Token `${token}`
+       >   },
+       >   body : {
+       >     content: "세번째 댓글",
+       >   }
+       >   ```
+       >
+       > - response
+       >
+       >   ```js
+       >   {
+       >       "id": 3,
+       >       "user": {
+       >           "id": 2,
+       >           "username": "hwang00",
+       >           "profile_photo": null
+       >       },
+       >       "content": "세번째 댓글",
+       >       "created_at": "2020-06-25T08:34:22.497141Z",
+       >       "updated_at": "2020-06-25T08:34:22.497463Z"
+       >   }
+       >   ```
+
+   - FeedCommentDetail
+
+     - put
+
+     - delete
+
+       > - URL : '/articles/:feed_pk/comments/:comment_pk'
+       >
+       > - request
+       >
+       >   ```js
+       >   headers: {
+       >     Authorization: Token `${token}`
+       >   }
+       >   ```
+
 
 

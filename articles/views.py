@@ -13,7 +13,7 @@ class FeedList(APIView):
 
     def get(self, request, format=None):
         feeds = Feed.objects.all()
-        serializer = FeedSerializer(feeds, many=True, context={'request': request})
+        serializer = FeedSerializer(feeds, many=True)
         return Response(serializer.data)
     
     def post(self, request):
@@ -30,7 +30,10 @@ class FeedDetail(APIView):
 
     def get_object(self, feed_pk):
         try:
-            return Feed.objects.get(pk=feed_pk)
+            feed = Feed.objects.get(pk=feed_pk)
+            # check_object_permissions가 없으면 APIView에서는 IsOwnerOrReadOnly가 작동하지 않음
+            self.check_object_permissions(self.request, feed)
+            return feed
         except Feed.DoesNotExist:
             raise Http404
 
@@ -77,9 +80,12 @@ class FeedCommentDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     def get_object(self, feed_pk, comment_pk):
         try:
-            return Comment.objects.get(pk=comment_pk)
+            comment = Comment.objects.get(pk=comment_pk)
+            self.check_object_permissions(self.request, comment)
+            return comment
         except Comment.DoesNotExist:
             raise Http404
+
     
     def put(self, request, feed_pk, comment_pk):
         comment = self.get_object(comment_pk)
@@ -93,3 +99,4 @@ class FeedCommentDetail(APIView):
         comment = self.get_object(comment_pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
