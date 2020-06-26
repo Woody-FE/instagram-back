@@ -1,13 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from accounts.permissions import IsOwnerOrReadOnly
 from .serializers import FeedSerializer, FeedDetailSerializer, FeedCommentSerializer
+from accounts.serializers import UserListSerializer
 from .models import Feed, Comment, FeedImage
-
 class FeedList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
@@ -35,7 +35,7 @@ class FeedDetail(APIView):
             self.check_object_permissions(self.request, feed)
             return feed
         except Feed.DoesNotExist:
-            raise Http404
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, feed_pk, format=None):
         feed = self.get_object(feed_pk)
@@ -61,7 +61,7 @@ class FeedCommentList(APIView):
         try:
             return Feed.objects.get(pk=feed_pk)
         except Feed.DoesNotExist:
-            raise Http404
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, feed_pk):
         feed = self.get_object(feed_pk)
@@ -84,7 +84,7 @@ class FeedCommentDetail(APIView):
             self.check_object_permissions(self.request, comment)
             return comment
         except Comment.DoesNotExist:
-            raise Http404
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     
     def put(self, request, feed_pk, comment_pk):
@@ -100,3 +100,45 @@ class FeedCommentDetail(APIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class FeedLike(APIView):
+    permission_classes = [IsAuthenticated]
+    def get_object(self, feed_pk):
+        try:
+            return Feed.objects.get(pk=feed_pk)
+        except Feed.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+    def post(self, request, feed_pk, format=None):
+        feed = self.get_object(feed_pk)
+        if feed.like_users.filter(id=request.user.id).exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        feed.like_users.add(request.user)
+        return Response(status=status.HTTP_200_OK)
+
+class FeedUnLike(APIView):
+    permission_classes = [IsAuthenticated]
+    def get_object(self, feed_pk):
+        try:
+            return Feed.objects.get(pk=feed_pk)
+        except Feed.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+    def post(self, request, feed_pk, format=None):
+        feed = self.get_object(feed_pk)
+        if feed.like_users.filter(id=request.user.id).exists():
+            feed.like_users.remove(request.user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class FeedLikeUsers(APIView):
+    def get_object(self, feed_pk):
+        try:
+            return Feed.objects.get(pk=feed_pk)
+        except Feed.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, feed_pk, format=None):
+        feed = self.get_object(feed_pk)
+        feed_like_users = feed.like_users.all()
+        serializer = UserListSerializer(feed_like_users, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

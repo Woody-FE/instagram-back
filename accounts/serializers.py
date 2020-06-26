@@ -4,6 +4,18 @@ from rest_framework import serializers
 User = get_user_model()
 
 class UserDetailSerializer(serializers.ModelSerializer):
+    followers_count = serializers.ReadOnlyField()
+    following_count = serializers.ReadOnlyField()
     class Meta:
         model = User
-        fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description')
+        fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description', 'followers_count', 'following_count')
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'profile_photo',
+            'username',
+            'name',
+        )
