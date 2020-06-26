@@ -45,7 +45,7 @@ class FeedDetail(APIView):
     def put(self, request, feed_pk, format=None):
         feed = self.get_object(feed_pk)
         serializer = FeedDetailSerializer(feed, data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -86,7 +86,6 @@ class FeedCommentDetail(APIView):
         except Comment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    
     def put(self, request, feed_pk, comment_pk):
         comment = self.get_object(comment_pk)
         serializer = FeedCommentSerializer(comment, data=request.data)

@@ -31,7 +31,7 @@ class User(AbstractUser):
 
     @property
     def following_count(self):
-        return self.following.count()
+        return self.followings.count()
 
     # def get_absolute_url(self):
     #     return reverse()

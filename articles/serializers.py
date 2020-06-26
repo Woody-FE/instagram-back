@@ -70,7 +70,6 @@ class FeedSerializer(serializers.ModelSerializer):
         for image_data in images_data.getlist('image'):
             FeedImage.objects.create(user=instance.user, feed=instance, image=image_data)
         return instance
-    
 
     class Meta:
         model = Feed
@@ -78,4 +77,17 @@ class FeedSerializer(serializers.ModelSerializer):
 
 # 피드의 디테일 페이지
 class FeedDetailSerializer(FeedSerializer):
-    user = UserFeedListSerializer()
+    user = UserFeedListSerializer(read_only=True)
+
+    def update(self, instance, validated_data):
+        if instance.content != validated_data.get('content'):
+            instance.tags.clear()
+            instance.content = validated_data.get('content', instance.content)
+            tag_sets = re.findall(r'#(\w+)\b', instance.content)
+            ins_tags = []
+            if tag_sets:
+                for t in tag_sets:
+                    tag, tag_created = Tag.objects.get_or_create(name=t)
+                    instance.tags.add(tag)
+        instance.save()
+        return instance
