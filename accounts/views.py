@@ -7,6 +7,7 @@ from django.http import Http404
 from .serializers import UserDetailSerializer, UserListSerializer, UserProfileUpdateSerializer
 from .permissions import IsOwnerOrReadOnly, IsMineOrReadOnly
 from rest_framework.permissions import IsAuthenticated
+from notifications.views import notification_create
 
 User = get_user_model()
 
@@ -30,7 +31,7 @@ class UserDetail(APIView):
     def put(self, request, username, format=None):
         user = self.get_object(username)
         # 수정 가능한 필드 name, gender, profile_photo, description
-        serializer = UserProfileUpdateSerializer(user, data=request.data)
+        serializer = UserProfileUpdateSerializer(user, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
@@ -55,6 +56,7 @@ class Follow(APIView):
         user = self.get_object(username)
         if user != request.user:
             request.user.followings.add(user)
+            notification_create(request.user, user, 'follow')
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

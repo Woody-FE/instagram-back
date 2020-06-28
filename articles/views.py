@@ -8,6 +8,7 @@ from accounts.permissions import IsOwnerOrReadOnly
 from .serializers import FeedSerializer, FeedDetailSerializer, FeedCommentSerializer
 from accounts.serializers import UserListSerializer
 from .models import Feed, Comment, FeedImage
+from notifications.views import notification_create
 class FeedList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
@@ -70,9 +71,11 @@ class FeedCommentList(APIView):
         return Response(serializer.data)
     
     def post(self, request, feed_pk):
+        feed = self.get_object(feed_pk)
         serializer = FeedCommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(feed_id=feed_pk, user=request.user)
+            serializer.save(feed_id=feed.id, user=request.user)
+            notification_create(request.user, feed.user, 'comment', feed, serializer.data['content'])
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -112,6 +115,7 @@ class FeedLike(APIView):
         if feed.like_users.filter(id=request.user.id).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         feed.like_users.add(request.user)
+        notification_create(request.user, feed.user, 'like', feed)
         return Response(status=status.HTTP_200_OK)
 
 class FeedUnLike(APIView):
