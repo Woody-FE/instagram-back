@@ -10,6 +10,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description', 'followers_count', 'following_count',)
 
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'profile_photo', 'name', 'gender', 'description')
+
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

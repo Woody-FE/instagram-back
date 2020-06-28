@@ -4,15 +4,15 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import get_user_model
 from django.http import Http404
-from .serializers import UserDetailSerializer, UserListSerializer
-from .permissions import IsOwnerOrReadOnly
+from .serializers import UserDetailSerializer, UserListSerializer, UserProfileUpdateSerializer
+from .permissions import IsOwnerOrReadOnly, IsMineOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
 # Create your views here.
 class UserDetail(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsMineOrReadOnly]
     def get_object(self, username):
         try:
             user = User.objects.get(username=username)
@@ -29,7 +29,8 @@ class UserDetail(APIView):
 
     def put(self, request, username, format=None):
         user = self.get_object(username)
-        serializer = UserDetailSerializer(user, data=request.data)
+        # 수정 가능한 필드 name, gender, profile_photo, description
+        serializer = UserProfileUpdateSerializer(user, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
