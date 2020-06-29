@@ -134,6 +134,7 @@ class FeedUnLike(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class FeedLikeUsers(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, feed_pk):
         try:
             return Feed.objects.get(pk=feed_pk)

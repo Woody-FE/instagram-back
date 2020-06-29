@@ -77,6 +77,7 @@ class UnFollow(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserFollowers(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
@@ -90,6 +91,7 @@ class UserFollowers(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class UserFollowings(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
