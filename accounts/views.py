@@ -73,7 +73,7 @@ class UnFollow(APIView):
         user = self.get_object(username)
         if user != request.user:
             request.user.followings.remove(user)
-            return Response(stauts=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserFollowers(APIView):
