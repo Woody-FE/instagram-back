@@ -70,6 +70,7 @@ class UnFollow(APIView):
 
     def post(self, request, username, format=None):
         # if request.user.followings.filter(username=username).exists():
+        user = self.get_object(username)
         if user != request.user:
             request.user.followings.remove(user)
             return Response(stauts=status.HTTP_200_OK)
