@@ -55,8 +55,15 @@
        >       "name": "",
        >       "gender": "",
        >       "description": "",
+       >       "followings": [
+       >           {
+       >               "id": 1,
+       >               "username": "hwang0"
+       >           }
+       >       ],
+       >       "followers": [],
        >       "followers_count": 0,
-       >       "following_count": 0
+       >       "following_count": 1
        >   }
        >   ```
 
@@ -92,46 +99,6 @@
        >   }
        >   ```
 
-   - UserFollowers
-
-     - get
-
-       > - URL : '/accounts/:usename/followers/'
-       >
-       > - response
-       >
-       >   ```js
-       >   [
-       >       {
-       >           "id": 2,
-       >           "profile_photo": null,
-       >           "username": "hwang00",
-       >           "name": ""
-       >       }
-       >   ]
-       >   ```
-
-   - UserFollowings
-
-     - get
-
-       > - URL : '/accounts/:usename/followings/'
-       >
-       > - response
-       >
-       >   ```js
-       >   [
-       >       {
-       >           "id": 1,
-       >           "profile_photo": null,
-       >           "username": "hwang0",
-       >           "name": ""
-       >       }
-       >   ]
-       >   ```
-       >
-       >   
-
 2. Articles
 
    - Feed
@@ -142,10 +109,63 @@
        >
        > - response
        >
-       >   ![](./guide/feedList.png)
-
+       >   ```js
+    >   [
+       >   						......
+    >       {
+       >           "id": 7,
+       >           "user": {
+       >               "id": 1,
+       >               "username": "hwang0",
+       >               "profile_photo": "/media/profiles/hwang0/VZNIPFN2UXRU1539215883729.jpg"
+       >           },
+       >           "content": "대박 찬스! #꿀",
+       >           "images": [
+       >               {
+       >                   "image": "/media/feeds/2020/06/26/hwang0/rgIxwVrN.jpg"
+       >               },
+       >               {
+       >                   "image": "/media/feeds/2020/06/26/hwang0/UfdlNQdi.jpg"
+       >               }
+       >           ],
+       >           "comments": [
+       >               {
+       >                   "id": 4,
+    >                   "user": {
+       >                       "id": 1,
+    >                       "username": "hwang0",
+       >                       "profile_photo": "/media/profiles/hwang0/VZNIPFN2UXRU1539215883729.jpg"
+    >                   },
+       >                   "content": "ㅋㅋㅋㅋ 잘되면 좋겠다 #정말루",
+       >                   "created_at": "2020-06-26T14:17:05.228530Z",
+       >                   "updated_at": "2020-06-26T14:17:05.228583Z"
+       >               }
+       >           ],
+       >           "comment_count": 1,
+       >           "tags": [
+       >               {
+       >                   "name": "꿀"
+       >               }
+       >           ],
+       >           "like_users": [
+       >               {
+       >                   "id": 2,
+       >                   "username": "hwang00",
+       >                   "profile_photo": null
+       >               }
+       >           ],
+       >           "like_count": 1,
+       >           "created_at": "2020-06-26T09:45:05.333533Z",
+       >           "updated_at": "2020-06-26T16:00:12.696651Z"
+       >       },
+       >   						.......
+       >   ]
+       >   ```
+       >   
+       >   
+   
      - post
-
+   
        > - URL : '/articles/'
        >
        > - request
@@ -164,48 +184,73 @@
        > - response
        >
        >   ![](./guide/feedCreate.png)
-
+   
    - FeedDetail
-
+   
      - get
-
+   
        > - URL : '/articles/:feed_pk'
        >
        > - response
        >
        >   ```js
        >   {
-       >       "id": 5,
+       >       "id": 7,
        >       "user": {
        >           "id": 1,
        >           "username": "hwang0",
-       >           "profile_photo": null,
+       >           "profile_photo": "/media/profiles/hwang0/VZNIPFN2UXRU1539215883729.jpg",
+       >           "followers": [
+       >               2
+       >           ],
        >           "feed_set": [
        >               {
-       >                   "id": 6,
+       >                   "id": 10,
+       >                   "images": [],
+       >                   "like_count": 0,
+       >                   "comment_count": 0
+       >               },
+       >               {
+       >                   "id": 9,
        >                   "images": [
        >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/iLLrvXhO.jpg"
-       >                       },
-       >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/ndiDOAgq.jpg"
+       >                           "image": "/media/feeds/2020/06/26/hwang0/glimGUeV.jpg"
        >                       }
        >                   ],
        >                   "like_count": 0,
        >                   "comment_count": 0
        >               },
        >               {
-       >                   "id": 5,
+       >                   "id": 8,
+       >                   "images": [],
+       >                   "like_count": 0,
+       >                   "comment_count": 0
+       >               },
+       >               {
+       >                   "id": 7,
        >                   "images": [
        >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/hELlPyko.jpg"
+       >                           "image": "/media/feeds/2020/06/26/hwang0/rgIxwVrN.jpg"
        >                       },
        >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/iMwAlsLj.jpg"
+       >                           "image": "/media/feeds/2020/06/26/hwang0/UfdlNQdi.jpg"
+       >                       }
+       >                   ],
+       >                   "like_count": 1,
+       >                   "comment_count": 1
+       >               },
+       >               {
+       >                   "id": 6,
+       >                   "images": [
+    >                       {
+       >                           "image": "/media/feeds/2020/06/25/hwang0/iLLrvXhO.jpg"
+    >                       },
+       >                       {
+       >                           "image": "/media/feeds/2020/06/25/hwang0/ndiDOAgq.jpg"
        >                       }
        >                   ],
        >                   "like_count": 0,
-       >                   "comment_count": 0
+       >                   "comment_count": 3
        >               },
        >               {
        >                   "id": 4,
@@ -232,52 +277,52 @@
        >                   ],
        >                   "like_count": 0,
        >                   "comment_count": 0
-       >               },
-       >               {
-       >                   "id": 2,
-       >                   "images": [],
-       >                   "like_count": 0,
-       >                   "comment_count": 0
-       >               },
-       >               {
-       >                   "id": 1,
-       >                   "images": [],
-       >                   "like_count": 0,
-       >                   "comment_count": 0
        >               }
        >           ]
        >       },
-       >       "content": "잘되네 ㅋㅋㅋㅋ 다행이다 다행! #재성화이팅 #종우화이팅 #커피빵화이팅",
+       >       "content": "대박 찬스! #꿀",
        >       "images": [
        >           {
-       >               "image": "/media/feeds/2020/06/25/hwang0/hELlPyko.jpg"
+       >               "image": "/media/feeds/2020/06/26/hwang0/rgIxwVrN.jpg"
        >           },
        >           {
-       >               "image": "/media/feeds/2020/06/25/hwang0/iMwAlsLj.jpg"
+       >               "image": "/media/feeds/2020/06/26/hwang0/UfdlNQdi.jpg"
        >           }
        >       ],
-       >       "comments": [],
-       >       "comment_count": 0,
+       >       "comments": [
+       >           {
+       >               "id": 4,
+       >               "user": {
+       >                   "id": 1,
+       >                   "username": "hwang0",
+       >                   "profile_photo": "/media/profiles/hwang0/VZNIPFN2UXRU1539215883729.jpg"
+       >               },
+       >               "content": "ㅋㅋㅋㅋ 잘되면 좋겠다 #정말루",
+       >               "created_at": "2020-06-26T14:17:05.228530Z",
+       >               "updated_at": "2020-06-26T14:17:05.228583Z"
+       >           }
+       >       ],
+       >       "comment_count": 1,
        >       "tags": [
        >           {
-       >               "name": "재성화이팅"
-       >           },
-       >           {
-       >               "name": "종우화이팅"
-       >           },
-       >           {
-       >               "name": "커피빵화이팅"
+       >               "name": "꿀"
        >           }
        >       ],
-       >       "like_users": [],
-       >       "like_count": 0,
-       >       "created_at": "2020-06-25T05:00:43.558254Z",
-       >       "updated_at": "2020-06-25T05:00:43.558300Z"
+       >       "like_users": [
+       >           {
+       >               "id": 2,
+       >               "username": "hwang00",
+       >               "profile_photo": null
+       >           }
+       >       ],
+       >       "like_count": 1,
+       >       "created_at": "2020-06-26T09:45:05.333533Z",
+       >       "updated_at": "2020-06-26T16:00:12.696651Z"
        >   }
        >   ```
-
+   
      - put
-
+   
        > - URL : '/articles/:feed_pk/'
        >
        > - request
@@ -335,9 +380,9 @@
        >                   "images": [
        >                       {
        >                           "image": "/media/feeds/2020/06/25/hwang0/iLLrvXhO.jpg"
-       >                       },
+    >                       },
        >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/ndiDOAgq.jpg"
+    >                           "image": "/media/feeds/2020/06/25/hwang0/ndiDOAgq.jpg"
        >                       }
        >                   ],
        >                   "like_count": 0,
@@ -347,11 +392,11 @@
        >                   "id": 4,
        >                   "images": [
        >                       {
-       >                           "image": "/media/feeds/2020/06/25/hwang0/eTxITEed.jpg"
+    >                           "image": "/media/feeds/2020/06/25/hwang0/eTxITEed.jpg"
        >                       },
-       >                       {
+    >                       {
        >                           "image": "/media/feeds/2020/06/25/hwang0/SBUonIyT.jpg"
-       >                       }
+    >                       }
        >                   ],
        >                   "like_count": 0,
        >                   "comment_count": 0
@@ -382,9 +427,9 @@
        >       ],
        >       "comments": [
        >           {
-       >               "id": 4,
+    >               "id": 4,
        >               "user": {
-       >                   "id": 1,
+    >                   "id": 1,
        >                   "username": "hwang0",
        >                   "profile_photo": null
        >               },
@@ -417,23 +462,23 @@
      - delete
 
        > - URL : '/articles/:feed_pk/'
-       >
+    >
        > - request
-       >
+    >
        >   ```js
        >   header: {
        >     Authorization: Token `${token}`
        >   }
        >   ```
-
+   
    - FeedComment
-
+   
      - get
 
        > - URL : '/articles/:feed_pk/comments/'
-       >
+    >
        > - response
-       >
+    >
        >   ```js
        >   [
        >       {
@@ -445,11 +490,11 @@
        >           },
        >           "content": "ㅋㅋㅋㅋㅋLCK화이팅",
        >           "created_at": "2020-06-25T08:10:45.068439Z",
-       >           "updated_at": "2020-06-25T08:10:45.068612Z"
+    >           "updated_at": "2020-06-25T08:10:45.068612Z"
        >       },
-       >       {
+    >       {
        >           "id": 1,
-       >           "user": {
+    >           "user": {
        >               "id": 2,
        >               "username": "hwang00",
        >               "profile_photo": null
@@ -459,11 +504,11 @@
        >           "updated_at": "2020-06-25T08:10:23.545578Z"
        >       }
        >   ]
-       >   ```
-
-     - post
-
-       > - URL : '/articles/:feed_pk/comments/'
+    >   ```
+   
+  - post
+   
+    > - URL : '/articles/:feed_pk/comments/'
        >
        > - request
        >
@@ -491,13 +536,13 @@
        >       "updated_at": "2020-06-25T08:34:22.497463Z"
        >   }
        >   ```
-
+   
    - FeedCommentDetail
-
+   
      - put
-
+   
      - delete
-
+   
        > - URL : '/articles/:feed_pk/comments/:comment_pk'
        >
        > - request
@@ -507,11 +552,11 @@
        >     Authorization: Token `${token}`
        >   }
        >   ```
-
+   
    - FeedLike
-
+   
      - post
-
+   
        >
        >
        >- URL : '/articles/:feed_pk/like'
@@ -523,11 +568,11 @@
        >    Authorization: Token `${token}`
        >  }
        >  ```
-
+   
    - FeedUnLike
-
+   
      - post
-
+   
        > - URL : '/articles/:feed_pk/unlike'
        >
        > - request
@@ -537,11 +582,11 @@
        >     Authorization: Token `${token}`
        >   }
        >   ```
-
+   
    - FeedLikeUsers
-
+   
      - get
-
+   
        > - URL : '/articles/:feed_pk/likes'
        >
        > - response

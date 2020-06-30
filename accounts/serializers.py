@@ -6,7 +6,7 @@ User = get_user_model()
 class UserFollowList(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username')
+        fields = ('id', 'username', 'profile_photo')
 
 class UserDetailSerializer(serializers.ModelSerializer):
     following_count = serializers.ReadOnlyField()
