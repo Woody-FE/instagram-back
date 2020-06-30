@@ -33,5 +33,13 @@ class User(AbstractUser):
     def following_count(self):
         return self.followings.count()
 
+    @property
+    def follower_users(self):
+        return self.followers.all()
+    
+    @property
+    def following_users(self):
+        return self.followings.all()
+
     # def get_absolute_url(self):
     #     return reverse()

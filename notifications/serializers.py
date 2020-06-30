@@ -1,9 +1,9 @@
-from articles.serializers import BaseFeedSerializer, UserInfoSerializer
+from articles.serializers import SmallFeedSerializer, UserInfoSerializer
 from rest_framework import serializers
 from .models import Notification
 class NotificationSerializer(serializers.ModelSerializer):
     from_user = UserInfoSerializer()
-    feed = BaseFeedSerializer()
+    feed = SmallFeedSerializer()
 
     class Meta:
         model = Notification
