@@ -133,16 +133,16 @@ class FeedUnLike(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class FeedLikeUsers(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    def get_object(self, feed_pk):
-        try:
-            return Feed.objects.get(pk=feed_pk)
-        except Feed.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+# class FeedLikeUsers(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     def get_object(self, feed_pk):
+#         try:
+#             return Feed.objects.get(pk=feed_pk)
+#         except Feed.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, feed_pk, format=None):
-        feed = self.get_object(feed_pk)
-        feed_like_users = feed.like_users.all()
-        serializer = UserListSerializer(feed_like_users, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+#     def get(self, request, feed_pk, format=None):
+#         feed = self.get_object(feed_pk)
+#         feed_like_users = feed.like_users.all()
+#         serializer = UserListSerializer(feed_like_users, many=True)
+#         return Response(data=serializer.data, status=status.HTTP_200_OK)

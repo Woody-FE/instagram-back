@@ -76,32 +76,32 @@ class UnFollow(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class UserFollowers(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    def get_object(self, username):
-        try:
-            return User.objects.get(username=username)
-        except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+# class UserFollowers(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     def get_object(self, username):
+#         try:
+#             return User.objects.get(username=username)
+#         except User.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, username, format=None):
-        user = self.get_object(username)
-        user_followers = user.followers.all()
-        serializer = UserListSerializer(user_followers, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+#     def get(self, request, username, format=None):
+#         user = self.get_object(username)
+#         user_followers = user.followers.all()
+#         serializer = UserListSerializer(user_followers, many=True)
+#         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-class UserFollowings(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    def get_object(self, username):
-        try:
-            return User.objects.get(username=username)
-        except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+# class UserFollowings(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     def get_object(self, username):
+#         try:
+#             return User.objects.get(username=username)
+#         except User.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, username, format=None):
-        user = self.get_object(username)
-        user_followings = user.followings.all()
-        serializer = UserListSerializer(user_followings, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+#     def get(self, request, username, format=None):
+#         user = self.get_object(username)
+#         user_followings = user.followings.all()
+#         serializer = UserListSerializer(user_followings, many=True)
+#         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
