@@ -89,6 +89,11 @@ class FeedCommentDetail(APIView):
         except Comment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+    def get(self, request, feed_pk, comment_pk, format=None):
+        comment = self.get_object(comment_pk)
+        serializer = FeedCommentSerializer(comment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def put(self, request, feed_pk, comment_pk, format=None):
         comment = self.get_object(comment_pk)
         serializer = FeedCommentSerializer(comment, data=request.data)
