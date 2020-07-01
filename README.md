@@ -583,26 +583,5 @@
        >   }
        >   ```
    
-   - FeedLikeUsers
+     
    
-     - get
-   
-       > - URL : '/articles/:feed_pk/likes'
-       >
-       > - response
-       >
-       >   ```js
-       >   [
-       >       {
-       >           "id": 2,
-       >           "profile_photo": null,
-       >           "username": "hwang00",
-       >           "name": ""
-       >       }
-       >   ]
-       >   ```
-       >
-       >   
-
-
-

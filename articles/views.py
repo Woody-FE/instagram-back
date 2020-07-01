@@ -81,7 +81,7 @@ class FeedCommentList(APIView):
 
 class FeedCommentDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    def get_object(self, feed_pk, comment_pk):
+    def get_object(self, comment_pk):
         try:
             comment = Comment.objects.get(pk=comment_pk)
             self.check_object_permissions(self.request, comment)
@@ -89,7 +89,7 @@ class FeedCommentDetail(APIView):
         except Comment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, feed_pk, comment_pk):
+    def put(self, request, feed_pk, comment_pk, format=None):
         comment = self.get_object(comment_pk)
         serializer = FeedCommentSerializer(comment, data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -97,7 +97,7 @@ class FeedCommentDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, feed_pk, comment_pk):
+    def delete(self, request, feed_pk, comment_pk, format=None):
         comment = self.get_object(comment_pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
