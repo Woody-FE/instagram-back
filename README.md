@@ -49,25 +49,132 @@
        >
        >   ```js
        >   {
-       >       "id": 2,
-       >       "username": "hwang00",
-       >       "profile_photo": null,
-       >       "name": "",
-       >       "gender": "",
-       >       "description": "",
-       >       "followings": [
+       >       "id": 1,
+       >       "username": "hwang0",
+       >       "profile_photo": "/media/profiles/hwang0/VZNIPFN2UXRU1539215883729.jpg",
+       >       "name": "태이니",
+       >       "gender": "male",
+       >       "description": "안녕하세요 태이니입니당!",
+       >       "followings": [],
+       >       "followers": [
        >           {
-       >               "id": 1,
-       >               "username": "hwang0"
+       >               "id": 2,
+       >               "username": "hwang00",
+       >               "profile_photo": null
        >           }
        >       ],
-       >       "followers": [],
-       >       "followers_count": 0,
-       >       "following_count": 1
+       >       "followers_count": 1,
+       >       "following_count": 0,
+       >       "feed_set": [
+       >           {
+       >               "id": 10,
+       >               "images": [],
+       >               "like_count": 0,
+       >               "comment_count": 0
+       >           },
+       >           {
+       >               "id": 9,
+       >               "images": [
+       >                   {
+       >                       "image": "/media/feeds/2020/06/26/hwang0/glimGUeV.jpg"
+       >                   }
+       >               ],
+       >               "like_count": 0,
+       >               "comment_count": 0
+       >           },
+       >           {
+       >               "id": 8,
+       >               "images": [],
+       >               "like_count": 0,
+       >               "comment_count": 0
+       >           },
+       >           {
+       >               "id": 7,
+       >               "images": [
+       >                   {
+       >                       "image": "/media/feeds/2020/06/26/hwang0/rgIxwVrN.jpg"
+       >                   },
+       >                   {
+       >                       "image": "/media/feeds/2020/06/26/hwang0/UfdlNQdi.jpg"
+       >                   }
+       >               ],
+       >               "like_count": 1,
+       >               "comment_count": 3
+       >           },
+       >           {
+       >               "id": 6,
+       >               "images": [
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/iLLrvXhO.jpg"
+       >                   },
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/ndiDOAgq.jpg"
+       >                   }
+       >               ],
+       >               "like_count": 0,
+       >               "comment_count": 4
+       >           },
+       >           {
+       >               "id": 4,
+       >               "images": [
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/eTxITEed.jpg"
+       >                   },
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/SBUonIyT.jpg"
+       >                   }
+       >               ],
+       >               "like_count": 0,
+       >               "comment_count": 0
+       >           },
+       >           {
+       >               "id": 3,
+       >               "images": [
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/bnTlNiMQ.jpg"
+       >                   },
+       >                   {
+       >                       "image": "/media/feeds/2020/06/25/hwang0/pcOwrfjq.jpg"
+       >                   }
+       >               ],
+       >               "like_count": 0,
+       >               "comment_count": 0
+       >           }
+       >       ]
        >   }
        >   ```
 
      - put
+
+       > - URL : '/accounts/:usename/'
+       >
+       > - request
+       >
+       >   ```js
+       >   header: {
+       >     Authorization: Token `${token}`
+       >   },
+       >   body: {
+       >     profile_photo: "GVG_085.png",
+       >     name: "인이",
+       >     gender: "male",
+       >     description: "안녕하세요 인이입니다. 잘부탁드려요!"
+       >   }
+       >   ```
+       >
+       > - response
+       >
+       >   ```js
+       >   {
+       >       "id": 1,
+       >       "profile_photo": "/media/profiles/hwang0/GVG_085_SEY620E.jpg",
+       >       "name": "인이",
+       >       "gender": "male",
+       >       "description": "안녕하세요 인이입니다. 잘부탁드려요!"
+       >   }
+       >   ```
+       >
+       >   
 
      - delete
 
@@ -557,18 +664,16 @@
    
      - post
    
-       >
-       >
        >- URL : '/articles/:feed_pk/like'
        >
        >- request
        >
-       >  ```js
-       >  headers: {
+       > ```js
+       > headers: {
        >    Authorization: Token `${token}`
        >  }
        >  ```
-   
+     
    - FeedUnLike
    
      - post
