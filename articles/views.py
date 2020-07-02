@@ -151,7 +151,7 @@ class FeedCommentLike(APIView):
         if comment.like_users.filter(id=request.user.id).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         comment.like_users.add(request.user)
-        notification_create(request.user, comment.user, 'like', None, comment)
+        notification_create(request.user, comment.user, 'like', None, comment.content)
         return Response(status=status.HTTP_200_OK)
 
 class FeedCommentUnLike(APIView):
