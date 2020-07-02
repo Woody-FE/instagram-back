@@ -56,9 +56,14 @@ class FeedImage(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     feed = models.ForeignKey(Feed, related_name='comments', on_delete=models.CASCADE)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_comments', blank=True)
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
+
+    @property
+    def comment_like_count(self):
+        return self.like_users.count()
 
     class Meta:
         ordering = ['-id']

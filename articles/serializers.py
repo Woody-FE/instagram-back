@@ -26,9 +26,11 @@ class FeedImageSerializer(serializers.ModelSerializer):
 # 댓글 리스트
 class FeedCommentSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer(read_only=True)
+    like_users = UserInfoSerializer(many=True, read_only=True)
+    comment_like_count = serializers.ReadOnlyField()
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'content', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'content', 'like_users', 'comment_like_count', 'created_at', 'updated_at')
 
 # 간소화된 피드 ( 해당 유저의 피드 디테일로 들어가면 나오는 피드 )
 class SmallFeedSerializer(serializers.ModelSerializer):

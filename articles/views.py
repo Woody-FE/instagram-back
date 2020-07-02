@@ -138,6 +138,37 @@ class FeedUnLike(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class FeedCommentLike(APIView):
+    permission_classes = [IsAuthenticated]
+    def get_object(self, comment_pk):
+        try:
+            return Comment.objects.get(pk=comment_pk)
+        except Comment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+    def post(self, request, feed_pk, comment_pk, format=None):
+        comment = self.get_object(comment_pk)
+        if comment.like_users.filter(id=request.user.id).exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        comment.like_users.add(request.user)
+        notification_create(request.user, comment.user, 'like', None, comment)
+        return Response(status=status.HTTP_200_OK)
+
+class FeedCommentUnLike(APIView):
+    permission_classes = [IsAuthenticated]
+    def get_object(self, comment_pk):
+        try:
+            return Comment.objects.get(pk=comment_pk)
+        except Comment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+    def post(self, request, feed_pk, comment_pk, format=None):
+        comment = self.get_object(comment_pk)
+        if comment.like_users.filter(id=request.user.id).exists():
+            comment.like_users.remove(request.user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 # class FeedLikeUsers(APIView):
 #     permission_classes = [IsAuthenticatedOrReadOnly]
 #     def get_object(self, feed_pk):
