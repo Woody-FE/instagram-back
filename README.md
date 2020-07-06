@@ -159,9 +159,9 @@
        >- request
        >
        >  ```js
-       >   header: {
-       >     Authorization: Token `${token}`
-       >   }
+       >  header: {
+       >    Authorization: Token `${token}`
+       >  }
        >  ```
        >
 
