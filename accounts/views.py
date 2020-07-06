@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import get_user_model
 from django.http import Http404
-from .serializers import UserDetailSerializer, UserListSerializer, UserProfileUpdateSerializer
+from .serializers import UserDetailSerializer, UserListSerializer #UserProfileUpdateSerializer
 from .permissions import IsOwnerOrReadOnly, IsMineOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 from notifications.views import notification_create
@@ -31,7 +31,8 @@ class UserDetail(APIView):
     def put(self, request, username, format=None):
         user = self.get_object(username)
         # 수정 가능한 필드 name, gender, profile_photo, description
-        serializer = UserProfileUpdateSerializer(user, data=request.data, partial=True)
+        # serializer = UserProfileUpdateSerializer(user, data=request.data, partial=True)
+        serializer = UserDetailSerializer(user, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)

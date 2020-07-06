@@ -21,7 +21,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 class FeedImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedImage
-        fields = ('image',)
+        fields = ('id', 'image',)
         
 # 댓글 리스트
 class FeedCommentSerializer(serializers.ModelSerializer):
