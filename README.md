@@ -158,11 +158,12 @@
        >
        >- request
        >
-       > ```js
-       > header: {
-       >   Authorization: Token `${token}`
-       > }
-       > ```
+       >  ```js
+       >   header: {
+       >     Authorization: Token `${token}`
+       >   }
+       >  ```
+       >
 
    - UnFollow
 
