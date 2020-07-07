@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import get_user_model
 from django.http import Http404
-from .serializers import UserDetailSerializer, UserListSerializer #UserProfileUpdateSerializer
+from .serializers import UserDetailSerializer, UserListSerializer, PrivateUserDetailSerializer #UserProfileUpdateSerializer
 from .permissions import IsOwnerOrReadOnly, IsMineOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 from notifications.views import notification_create
@@ -25,6 +25,10 @@ class UserDetail(APIView):
     # 유저 조회
     def get(self, request, username, format=None):
         user = self.get_object(username)
+        if user.is_private == True:
+            if not user.followings.filter(username=request.user.username).exists():
+                serializer = PrivateUserDetailSerializer(user)
+                return Response(serializer.data)
         serializer = UserDetailSerializer(user)
         return Response(serializer.data)
 

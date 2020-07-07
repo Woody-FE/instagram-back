@@ -9,15 +9,21 @@ class UserFollowList(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'profile_photo')
 
-class UserDetailSerializer(serializers.ModelSerializer):
+class PrivateUserDetailSerializer(serializers.ModelSerializer):
     following_count = serializers.ReadOnlyField()
     followers_count = serializers.ReadOnlyField()
     followers = UserFollowList(many=True, read_only=True)
     followings = UserFollowList(many=True, read_only=True)
-    feed_set = SmallFeedSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description', 'followings', 'followers', 'followers_count', 'following_count', 'feed_set')
+        fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description', 'followings', 'followers', 'followers_count', 'following_count', 'is_private')
+
+class UserDetailSerializer(PrivateUserDetailSerializer):
+    feed_set = SmallFeedSerializer(many=True, read_only=True)
+
+    class Meta(PrivateUserDetailSerializer.Meta):
+        fields = ('id', 'username', 'profile_photo', 'name', 'gender', 'description', 'followings', 'followers', 'followers_count', 'following_count', 'is_private', 'feed_set')
 
 # class UserProfileUpdateSerializer(UserDetailSerializer):
 #     class Meta(UserDetailSerializer.Meta):

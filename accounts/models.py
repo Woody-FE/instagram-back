@@ -21,6 +21,7 @@ class User(AbstractUser):
     followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings')
     gender = models.CharField(max_length=80, choices=GENDER_CHOICES, blank=True)
     description = models.TextField(blank=True)
+    is_private = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username

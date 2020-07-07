@@ -5,15 +5,18 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from accounts.permissions import IsOwnerOrReadOnly
-from .serializers import FeedSerializer, FeedDetailSerializer, FeedCommentSerializer
+from .serializers import FeedSerializer, FeedDetailSerializer, FeedCommentSerializer, SmallFeedSerializer, UserInfoSerializer
 from accounts.serializers import UserListSerializer
 from .models import Feed, Comment, FeedImage
 from notifications.views import notification_create
+from django.db.models import Q
+
 class FeedList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get(self, request, format=None):
         feeds = Feed.objects.all()
+        
         serializer = FeedSerializer(feeds, many=True)
         return Response(serializer.data)
     
@@ -40,6 +43,9 @@ class FeedDetail(APIView):
 
     def get(self, request, feed_pk, format=None):
         feed = self.get_object(feed_pk)
+        if feed.user.is_private == True:
+            if not feed.user.followers.filter(pk=request.user.pk).exists():
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = FeedDetailSerializer(feed)
         return Response(serializer.data)
 
@@ -182,3 +188,24 @@ class FeedCommentUnLike(APIView):
 #         feed_like_users = feed.like_users.all()
 #         serializer = UserListSerializer(feed_like_users, many=True)
 #         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class Search(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get(self, request):
+        search = request.query_params.get('search', None)
+        # 검색어가 비어있지않음
+        if search != None:
+            #태그일 경우
+            if search[0] == '#':
+                search = search[1:]
+                feeds = Feed.objects.filter(tags__name__contains=search).order_by('-created_at').distinct()
+                serializer = SmallFeedSerializer(feeds, many=True)
+                return Response(serializer.data)
+            #태그가 아닐 경우
+            else:
+                User = get_user_model()
+                users = User.objects.filter(Q(name__contains=search) | Q(username__contains=search)).distinct()
+                serializer = UserInfoSerializer(users, many=True)
+                return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
