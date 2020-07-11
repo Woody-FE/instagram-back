@@ -13,5 +13,5 @@ urlpatterns = [
     # path('<int:feed_pk>/likes/', views.FeedLikeUsers.as_view()),
     path('<int:feed_pk>/like/', views.FeedLike.as_view()),
     path('<int:feed_pk>/unlike/', views.FeedUnLike.as_view()),
-    path('search/', views.Search.as_view())
+    path('search', views.Search.as_view())
 ]
