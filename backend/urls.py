@@ -24,6 +24,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('articles/', include('articles.urls')),
     path('accounts/', include('accounts.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
 
 if settings.DEBUG:
