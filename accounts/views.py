@@ -25,6 +25,9 @@ class UserDetail(APIView):
     # 유저 조회
     def get(self, request, username, format=None):
         user = self.get_object(username)
+        if request.user == user:
+            serializer = UserDetailSerializer(user)
+            return Response(serializer.data)
         if user.is_private == True:
             if not user.followings.filter(username=request.user.username).exists():
                 serializer = PrivateUserDetailSerializer(user)
