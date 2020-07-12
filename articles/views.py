@@ -17,17 +17,17 @@ class FeedList(APIView):
     def get(self, request, format=None):
         # feeds = Feed.objects.all()
         # request user의 팔로우 유저 등의 피드를 제공하도록 로직 구성 생각중
+        print(request.user)
         if request.user.pk == None:
-            feeds = Feed.objects.all().order_by('-created_at')
+            feeds = Feed.objects.filter(user__is_private=False).order_by('-created_at')
         else:
             feeds = []
             follower_users = request.user.followers.all()
             for follower_user in follower_users:
                 if follower_user.is_private == True:
-                    if not follower_user.followings.filter(pk=request.user.pk).exists():
-                        continue
-                follower_feeds = follower_user.feed_set.all().order_by('-created_at')[:5]
-                feeds.extend(follower_feeds)
+                    if follower_user.followings.filter(pk=request.user.pk).exists():
+                        follower_feeds = follower_user.feed_set.all().order_by('-created_at')[:5]
+                        feeds.extend(follower_feeds)
             my_feeds = request.user.feed_set.all().order_by('-created_at')[:5]
             feeds.extend(my_feeds)
             feeds.sort(key=lambda feed: feed.created_at, reverse=True)

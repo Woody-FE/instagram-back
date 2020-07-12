@@ -15,7 +15,7 @@ class TagSerializer(serializers.ModelSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'name', 'profile_photo')
+        fields = ('id', 'username', 'name', 'profile_photo', 'is_private')
 
 # 피드에 들어갈 사진
 class FeedImageSerializer(serializers.ModelSerializer):
